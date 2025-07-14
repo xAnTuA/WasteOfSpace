@@ -19,16 +19,19 @@ othermcu:Send("HSBM")
 Example:
 ```luau
 -- we can store mcu's information in table
-local othermcu = {[number]:{ standard: string }} -- the key is an mcu's reference
+local otherMcus = {[number]:{}} -- the key is an mcu's reference
 
-local function HSBM_x(sender, info)
-    
+local function SaveMcuConnection(sender, info)
+    if not otherMcu[sender] then
+        table.insert(otherMcus,{ sender = info })
+    end
 end
 
-local awaitForResponce = coroutine.create(HSBM_x)
+local awaitForResponce = coroutine.create(SaveMcuConnection)
 
 -- after sending "HSBM"
 local success,result = coroutine.resume(awaitForResponce,Micrrocontroller:Receive())
+if success then SaveMcuConnection(result[1],result[2]) end
 ```
 
 #### 3. Microcontroller if get the command "HSBM" needs to respond with info about protocol it is using for communication
