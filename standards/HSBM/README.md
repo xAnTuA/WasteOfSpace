@@ -1,10 +1,10 @@
 # Handshake Standard Between Microcontrollers (HSBM)
 
-An minimal, universal handshake between two microcontrollers 
-providing 
+A minimal and universal handshake between two microcontrollers, 
+ensuring successful and intentional communication.
 
 >[!NOTE]
->will be referred as an "mcu" now on
+>Microcontroller will be referred as an "mcu" now on
 
 ## Rules of implementation
 
@@ -16,6 +16,7 @@ othermcu:Send("HSBM")
 >[!IMPORTANT]
 >To keep mcu not frozen awaiting for an responce, create new task
 
+Example:
 ```luau
 -- we can store mcu's information in table
 local othermcu = {[number]:{ standard: string }} -- the key is an mcu's reference
@@ -37,15 +38,20 @@ local function HSBM(sender)
     sender:Send(HSBM_INFO)
 end
 ```
+##### Responce format
 
-- info must be an table and it structure <b>must</b> look like:
+The responce must follow this structure:
 
 ```luau
 local HSBM_INFO = {
     protocol = {
-        name:       string
-        version:    { major: number, minor: number, patch: number }
-        url:        string
+        name = "ProtocolName", -- string
+        version = {
+            major = 1,         -- number
+            minor = 0,         -- number
+            patch = 0          -- number
+        },
+        url = "https://example.com" -- string (specification or documentation)
     }
 }
 ```
