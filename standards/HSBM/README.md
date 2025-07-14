@@ -8,11 +8,11 @@ providing
 
 ## Rules of implementation
 
-### 1. The mcu that wants to enstablish connection need to send as an argument only "HSBM" as an string
+#### 1. The mcu that wants to enstablish connection need to send as an argument only "HSBM" as an string
 ```luau
 othermcu:Send("HSBM")
 ```
-### 2. mcu after sending request shall wait for responce
+#### 2. mcu after sending request shall wait for responce
 >[!IMPORTANT]
 >To keep mcu not frozen awaiting for an responce, create new task
 
@@ -28,7 +28,7 @@ local awaitForResponce = coroutine.create(HSBM_x)
 local success,result = coroutine.resume(awaitForResponce,Micrrocontroller:Receive())
 ```
 
-### 3. Microcontroller if get the command "HSBM" needs to respond with info about protocol it is using for communication
+#### 3. Microcontroller if get the command "HSBM" needs to respond with info about protocol it is using for communication
 
 ```luau
 
