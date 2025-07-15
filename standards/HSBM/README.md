@@ -12,9 +12,7 @@ ensuring successful and intentional communication.
 ```luau
 othermcu:Send("HSBM")
 ```
-#### 2. mcu after sending request shall wait for responce
->[!IMPORTANT]
->To keep mcu not frozen awaiting for an responce, create new task
+#### 2. Mcu after sending request shall wait for responce
 
 Example:
 ```luau
@@ -34,6 +32,9 @@ local success,result = coroutine.resume(awaitForResponce,Micrrocontroller:Receiv
 if success then SaveMcuConnection(result[1],result[2]) end
 ```
 
+>[!IMPORTANT]
+>To keep mcu not frozen awaiting for an responce, create new task
+
 #### 3. Microcontroller if get the command "HSBM" needs to respond with info about protocol it is using for communication
 
 ```luau
@@ -41,9 +42,9 @@ local function HSBM(sender)
     sender:Send(HSBM_INFO)
 end
 ```
-##### Responce format
+#### Responce format
 
-The responce must follow this structure:
+The responce <b>must</b> follow this structure:
 
 ```luau
 local HSBM_INFO = {
