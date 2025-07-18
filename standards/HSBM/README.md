@@ -4,50 +4,31 @@ A minimal and universal handshake between two microcontrollers,
 ensuring successful and intentional communication.
 
 >[!NOTE]
->Microcontroller will be referred as an "mcu" now on
+>Microcontroller will be referred to as mcu from now on.
 
-## Rules of implementation
-
-#### 1. The mcu that wants to enstablish connection need to send as an argument only "HSBM" as an string
+### Initiating the Handshake
+To get protocol info of othermcu, send only the string "HSBM"
 ```luau
 othermcu:Send("HSBM")
 ```
-#### 2. Mcu after sending request shall wait for responce
+>[!NOTE]
+>Expect a response after sending "HSBM".
 
-Example:
-```luau
--- we can store mcu's information in table
-local otherMcus = {[number]:{}} -- the key is an mcu's reference
-
-local function SaveMcuConnection(sender, info)
-    if not otherMcu[sender] then
-        table.insert(otherMcus,{ sender = info })
-    end
-end
-
-local awaitForResponce = coroutine.create(SaveMcuConnection)
-
--- after sending "HSBM"
-local success,result = coroutine.resume(awaitForResponce,Micrrocontroller:Receive())
-if success then SaveMcuConnection(result[1],result[2]) end
-```
-
->[!IMPORTANT]
->To keep mcu not frozen awaiting for an responce, create new task
-
-#### 3. Microcontroller if get the command "HSBM" needs to respond with info about protocol it is using for communication
+### Responding to the Handshake 
+After receiving an "HSBM" message, <strong>we must send back two arguments: "HSBM" string and protocol metadata table</strong>
 
 ```luau
 local function HSBM(sender)
-    sender:Send(HSBM_INFO)
+    sender:Send("HSBM",PROTOCOL_INFO)
 end
 ```
-#### Responce format
+### Protocol metadata format
 
-The responce <b>must</b> follow this structure:
+>[!IMPORTANT]
+>Responce must be a table, with exact field names and structure shown below.
 
 ```luau
-local HSBM_INFO = {
+local PROTOCOL_INFO = {
     protocol = {
         name = "ProtocolName", -- string
         version = {
@@ -59,8 +40,3 @@ local HSBM_INFO = {
     }
 }
 ```
-
-
-## Sample
-
-[Example implementation](sample.luau) of HSBM
