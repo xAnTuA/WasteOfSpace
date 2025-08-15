@@ -1,0 +1,8 @@
+{
+	"name": "collection"
+	"version": "1.0.0",
+	"dependencies": {
+		"foreach": "1.0.0",
+		"map": "1.0.0"
+	}
+}
