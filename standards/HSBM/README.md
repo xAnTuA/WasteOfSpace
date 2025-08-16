@@ -1,39 +1,28 @@
-# Handshake Standard Between Microcontrollers (HSBM) v1.0.0-alpha
+# Handshake Standard Between Microcontrollers (HSBM) v1.0.0-beta
 
 A minimal and universal handshake between two microcontrollers, 
 ensuring successful and intentional communication.
+In with every communication attempt has first argument as command.
+
+>[!IMPORTANT]
+>First argument is ALWAYS command. Using first argument as command in protocols can benefit most actions between microcontrollers especially asynch calls.
 
 >[!NOTE]
 >Microcontroller will be referred to as mcu from now on.
 
 ### Requesting protocol information 
-To get protocol info of othermcu, send only the string "HSBM_REQ"
+Requesting can be done by sending command "REQ_PROTOCOL"
+
 ```luau
-othermcu:Send("HSBM_REQ")
+othermcu:Send("REQ_PROTOCOL")
 ```
 >[!NOTE]
 >Expect a response after request.
 
 ### Responding to the Handshake 
-After receiving an "HSBM_REQ" message, <strong>we must send back two arguments: "HSBM" string and protocol metadata table</strong>
+After receiving an "REQ_PROTOCOL" command , <strong>script shall return protocol name and version to asker</strong> 
+
 
 ```luau
-sender:Send("HSBM_RES",PROTOCOL_INFO)
-```
-### Protocol metadata format
-
->[!IMPORTANT]
->Responce must be a table, with exact field names and structure shown below.
-
-```luau
-local PROTOCOL_INFO = {
-    protocol = {
-        name: string = "ProtocolName",
-        version = { -- standard version in SemVer
-            major: number = 1,
-            minor: number = 0,
-            patch: number = 0
-        }
-    }
-}
+target:Send("RES_PROTOCOL","PROTOCOL_NAME","1.0.0")
 ```
