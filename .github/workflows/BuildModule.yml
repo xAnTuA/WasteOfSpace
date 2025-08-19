@@ -6,6 +6,9 @@ on:
       - "models/modules/**/code/*.luau"
       - "standards/MODULAR/code/1.0.0/*.luau"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
