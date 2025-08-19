@@ -11,7 +11,7 @@ local GLOBALS = {
 	modem = false,
 	master = Microcontroller
 }
-local PRIVILAGES = setmetatable({},{}) -- zrobic aby tylko ten skrypt mogl edytowac 
+local PRIVILAGES = setmetatable({},{})
 
 -- so basicaly this is a system boot, not yet a functional module
 
