@@ -1,8 +1,14 @@
 local GLOBALS = {
 	packageManager = ,
-	modem = ,
 	master = ,
-	Promise = require("promise")
+	modem = ,
+	starmap = ,
+	telescope = ,
+	blackbox = ,
+	-- disk?
+	instrument = ,
+	lifeSensor =,
+	scanner = ,
 }
 
 local function newResolvable()
