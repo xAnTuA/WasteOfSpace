@@ -47,8 +47,6 @@ MODULE_META.name = "PackageManager"
 MODULE_META.displayName = "Package Manager"
 
 
-
-
 ----------------------------------------------
 local disk = assert(GetPart("Disk"),MODULE_META.displayName..": disk not found")
 local cache = {}
@@ -71,7 +69,7 @@ local function LoadPackagesToCache()
 	end
 end
 
-AfterInit = function()
+MODULE_META.AfterInit = function()
 	LoadPackagesToCache()
 end
 
@@ -90,7 +88,7 @@ local function GetPackageList()
 end
 
 local function GetPackage(package,version)
-	local content = loadstring(assert(GLOBALS.modem:GetAsync(packageURL.."/"..package.."/"..version.."/index.luau"),"cannot retrieve package - package manager"))()
+	local content = loadstring(assert(GLOBALS.modem:GetAsync(packageURL.."/"..package.."/"..version..".luau"),"cannot retrieve package - package manager"))()
 	SavePackage(package,version,content)
 end
 
