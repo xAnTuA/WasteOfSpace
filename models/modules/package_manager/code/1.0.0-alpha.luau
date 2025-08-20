@@ -3,7 +3,7 @@ MODULE_META.displayName = "Package Manager"
 
 
 AfterInit = function()
-	LoadPackagesToCashe()
+	LoadPackagesToCache()
 end
 
 ----------------------------------------------
@@ -19,7 +19,7 @@ local function ensurePackageSlot(name)
     return cache[name]
 end
 
-local function LoadPackagesToCashe()
+local function LoadPackagesToCache()
 	local packages = disk:ReadAll()
 	local len = #packages
 
@@ -29,7 +29,7 @@ local function LoadPackagesToCashe()
 end
 
 local function SavePackage(name,version,content)
-	local versionsContent = disk:Read(name) --table
+	local versionsContent = disk:Read(name)
 	
 	if not versionsContent then versionsContent = {} end
 
@@ -45,15 +45,16 @@ end
 local function GetPackage(package,version)
 	local content = loadstring(assert(GLOBALS.modem:GetAsync(packageURL.."/"..package.."/"..version.."/index.luau"),"cannot retrieve package - package manager")))()
 	SavePackage(package,version,content)
-	--TODO
-	-- get dependents
 end
 
 local function GetBestVersion(package,version)
 	if not packageList then GetPackageList() end
-	
-	local major = version:
-	return 
+	local versions = packageList[package]
+	local major = version:sub(1,1)
+
+	for _,v in ipairs(versions) do
+		if v:sub(1,1) == major then return v end
+	end
 end
 
 local function AcquirePackage(package,version)
