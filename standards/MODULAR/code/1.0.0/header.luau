@@ -13,7 +13,9 @@ local AfterInit = function() end
 local function INIT(sender,globals)
 	if sender.PartLocked ~= Microcontroller.PartLocked then return end
 	GLOBALS = globals
-	pm = GLOBALS.PacketManager
+	GLOBALS.PacketManager:Send("REQ_PM")
+	local s,c,x = Microcontroller:Receive()
+	pm = x
 	AfterInit()
 	HandleCommand = PostInitHandleCommand
 end
