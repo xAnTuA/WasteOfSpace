@@ -90,7 +90,12 @@ end
 
 local function GetPackage(package,version)
 	local content = loadstring(assert(GLOBALS.modem:GetAsync(packageURL.."/"..package.."/"..version..".luau"),"cannot retrieve package - package manager"))()
+	
+	local slot = ensurePackageSlot(package)
+	slot[version] = content
 	SavePackage(package,version,content)
+
+	return slot[version]
 end
 
 local function GetBestVersion(package,version)
@@ -106,7 +111,7 @@ end
 local function AcquirePackage(package,version)
 	local content = ensurePackageSlot(package)[version]
 	if not content then
-		GetPackage(package,GetBestVersion(package,version))
+		return GetPackage(package,GetBestVersion(package,version))
 	end
 	return content 
 end
