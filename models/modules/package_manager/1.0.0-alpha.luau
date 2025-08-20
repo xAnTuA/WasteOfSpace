@@ -34,34 +34,88 @@ commands = {
 -----------------------MODULAR-HEADER-------------------------
 
 
-local PROTOCOL = { name = "MODULAR", version = "1.0.0"}
--- musimy sie jakos odroznic / gdzies zdefiniowac kim jestesmy
---
--- najpierw czekamy na starter kit - cos co kazdy modul posiada / co ma wspulne
+MODULE_META.name = "PackageManager"
+MODULE_META.displayName = "Package Manager"
 
--- wspulne:
--- globalne wartosci,
--- 3 komendy, init, protocol i module meta,
--- petla czekania na komende, i przetwarzanie jej,
---
--- requirePackage -- nie potrzebujemy promise, jezeli jest to asynch task, i funckcja zwraca wartosc
---
--- w takim razie liepiej zrobic object packetMenagera, ktory ma swoje kolalne variables, i jest wstanie dostac nowe pakiety z sieci. i udostepnic obiekt i jego funckcje, jezeli pytajacy ma tego samego wlasciciela badz ma uprawnienia
 
+AfterInit = function()
+	LoadPackagesToCashe()
+end
+
+----------------------------------------------
+local disk = assert(GetPart("Disk"),MODULE_META.displayName..": disk not found")
+local cache = {}
+local packageList
+local packageURL= "https://raw.githubusercontent.com/xAnTuA/WasteOfSpace/refs/heads/main/packages"
+
+local function ensurePackageSlot(name)
+    if not cache[name] then
+        cache[name] = {}
+    end
+    return cache[name]
+end
+
+local function LoadPackagesToCashe()
+	local packages = disk:ReadAll()
+	local len = #packages
+
+	for key,content in ipairs(packages) do
+		cache[key] = content
+	end
+end
+
+local function SavePackage(name,version,content)
+	local versionsContent = disk:Read(name) --table
+	
+	if not versionsContent then versionsContent = {} end
+
+	versionsContent[version] = content
+
+	disk:Write(name,versionsContent)
+end
+
+local function GetPackageList()
+	packageList = JSONDecode(assert(GLOBALS.modem:GetAsync(packageURL.."/list.json"),MODULE_META.displayName..": cannot retrieve package list from url"))
+end
+
+local function GetPackage(package,version)
+	local content = loadstring(assert(GLOBALS.modem:GetAsync(packageURL.."/"..package.."/"..version.."/index.luau"),"cannot retrieve package - package manager")))()
+	SavePackage(package,version,content)
+	--TODO
+	-- get dependents
+end
+
+local function GetBestVersion(package,version)
+	if not packageList then GetPackageList() end
+	
+	local major = version:
+	return 
+end
+
+local function AcquirePackage(package,version)
+	local content = ensurePackageSlot(package)[version]
+	if not content then
+		GetPackage(package,GetBestVersion(package,version))
+	end
+	return content 
+end
 
 local PackageManager = {}
 PackageManager.__Index = PackageManager
 
 
-function PackageManager.Require(package,version)
-
-	return package
+function PackageManager.RequirePackage(package,version)
+	return AcquirePackage(package, version) 
 end
 
--- podajemy jakie pakiety potrzebujemy - dostajemy do nich referencje
+
+local function ProvidePMTo(target)
+	target:Send("RES_PM",PackageManager)
+end
 
 
--- implementcja funkcjonalnosci
+commands.REQ_PM = ProvidePMTo
+
 
 
 -----------------------MODULAR-FOTTER-------------------------

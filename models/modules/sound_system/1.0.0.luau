@@ -37,10 +37,8 @@ commands = {
 MODULE_META.name = "SoundSystem"
 MODULE_META.displayName = "Sound System"
 
-local foreach,map,Collection
+local Collection
 afterInit = function()
-	foreach = pm:RequirePackage("foreach","1.0.0")
-	map = pm:RequirePackage("map","1.0.0")
 	Collection = pm:RequirePackage("collection","1.0.0")
 end
 
