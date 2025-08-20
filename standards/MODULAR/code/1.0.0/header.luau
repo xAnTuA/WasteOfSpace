@@ -28,10 +28,8 @@ local function ProvideMetaTo(target)
 	target:Send("RES_MODULE_META",MODULE_META)
 end
 
-commands = {
-	RES_INIT = INIT,
-	REQ_PROTOCOL = ProvideProtocolTo,
-	REQ_MODULE_META = ProvideMetaTo,
-}
+commands.RES_INIT = INIT
+commands.REQ_PROTOCOL = ProvideProtocolTo
+commands.REQ_MODULE_META = ProvideMetaTo
 -----------------------MODULAR-HEADER-------------------------
 
