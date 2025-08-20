@@ -1,4 +1,4 @@
-local Collection = {
+return {
 	ChangeProperty = function(array,property,value)
 		foreach(array,function(item)
 			item[property] = value

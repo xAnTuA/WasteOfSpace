@@ -1,4 +1,4 @@
-local function LevenshteinDistance(a: string, b: string): number
+return function(a: string, b: string): number
     local lenA, lenB = #a, #b
 
     if lenA == 0 then return lenB end

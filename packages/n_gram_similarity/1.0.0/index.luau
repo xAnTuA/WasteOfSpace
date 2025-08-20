@@ -1,4 +1,4 @@
-local function NGramSimilarity(a,b,n)
+return function(a,b,n)
 	n = n or 2
 	local function grams(str)
 		local result = {}
