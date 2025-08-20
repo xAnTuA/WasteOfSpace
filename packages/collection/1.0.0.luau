@@ -1,5 +1,5 @@
-local foreach = pm.AcquirePackage("foreach","1.0.0")
-local map = pm.AcquirePackage("map","1.0.0")
+local foreach = pm.RequirePackage("foreach","1.0.0")
+local map = pm.RequirePackage("map","1.0.0")
 
 return {
 	ChangeProperty = function(array,property,value)
