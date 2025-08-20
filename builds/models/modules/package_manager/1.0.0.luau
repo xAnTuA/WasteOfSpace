@@ -38,9 +38,7 @@ MODULE_META.name = "PackageManager"
 MODULE_META.displayName = "Package Manager"
 
 
-AfterInit = function()
-	LoadPackagesToCache()
-end
+
 
 ----------------------------------------------
 local disk = assert(GetPart("Disk"),MODULE_META.displayName..": disk not found")
@@ -62,6 +60,10 @@ local function LoadPackagesToCache()
 	for key,content in ipairs(packages) do
 		cache[key] = content
 	end
+end
+
+AfterInit = function()
+	LoadPackagesToCache()
 end
 
 local function SavePackage(name,version,content)
