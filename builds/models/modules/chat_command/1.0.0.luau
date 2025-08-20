@@ -19,7 +19,15 @@ local function INIT(sender,globals)
 		pm = x
 	end
 	AfterInit()
-	HandleCommand = PostInitHandleCommand
+	HandleCommand = function(sender,command,...) 
+		local _command = commands[command]
+		if _command then
+			task.spawn(_command,sender,...)
+		else
+			warn(MODULE_META.displayName .. ": Receive call for command \""..tostring(command).."\"",0)
+		end
+	end
+	commands.REQ_INIT = nil
 end
 
 local function ProvideProtocolTo(target)
@@ -122,15 +130,6 @@ local function PreInitHandleCommand(sender,command,...)
 		_command(sender,...)
 	else
 		warn(MODULE_META.displayName .. ": Receive call for command \""..tostring(command).."\" (Before init)",0)
-	end
-end
-
-local function PostInitHandleCommand(sender,command,...) 
-	local _command = commands[command]
-	if _command then
-		task.spawn(_command,sender,...)
-	else
-		warn(MODULE_META.displayName .. ": Receive call for command \""..tostring(command).."\"",0)
 	end
 end
 
