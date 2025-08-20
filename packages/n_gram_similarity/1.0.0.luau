@@ -1,3 +1,5 @@
+local foreach = AcquirePackage("foreach","1.0.0")
+
 return function(a,b,n)
 	n = n or 2
 	local function grams(str)
@@ -11,10 +13,10 @@ return function(a,b,n)
 	local aGrams, bGrams = grams(a), grams(b)
 	local matches = 0
 
-	for gram in pairs(aGrams) do
+	foreach(aGrams, function(gram)
 		if bGrams[gram] then
 			matches += 1
 		end
-	end
+	end)
 	return matches
 end
