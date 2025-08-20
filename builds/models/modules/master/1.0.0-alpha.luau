@@ -57,7 +57,7 @@ GLOBALS.packageManager:Send("REQ_INIT",GLOBALS)
 -----------------------MODULAR-FOTTER-------------------------
 local function PreInitHandleCommand(sender,command,...) 
 	local _command = commands[command]
-	local preInitCommands = { RES_INIT = true, REQ_PROTOCOL = true, REQ_MODULE_META = true }
+	local preInitCommands = { REQ_INIT = true, REQ_PROTOCOL = true, REQ_MODULE_META = true }
 	if preInitCommands[command] then
 		_command(sender,...)
 	else
