@@ -4,7 +4,7 @@ MODULE_META.displayName = "Package Manager"
 
 ----------------------------------------------
 local disk = assert(GetPart("Disk"),MODULE_META.displayName..": disk not found")
-local cache = {}
+cache = {}
 local packageList
 local packageURL= "https://raw.githubusercontent.com/xAnTuA/WasteOfSpace/refs/heads/main/packages"
 
