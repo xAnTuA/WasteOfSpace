@@ -21,7 +21,7 @@ def build_modules():
                 continue
 
             version = os.path.splitext(file)[0]  # e.g. "1.0.0"
-            version_outdir = os.path.join(MODULES_DIR, module_name)
+            version_outdir = os.path.join("builds",MODULES_DIR, module_name)
             os.makedirs(version_outdir, exist_ok=True)
 
             with open(os.path.join(module_path, file), "r", encoding="utf-8") as f:
