@@ -2,8 +2,8 @@ MODULE_META.name = "SoundSystem"
 MODULE_META.displayName = "Sound System"
 
 local Collection
-afterInit = function()
-	Collection = pm:RequirePackage("collection","1.0.0")
+MODULE_META.AfterInit = function()
+	Collection = pm.RequirePackage("collection","1.0.0")
 end
 
 ---------------FUNCTIONALITY-OF-MODULE--------------------
