@@ -1,5 +1,6 @@
 local PROTOCOL = { name = "MODULAR", version = "1.0.0" }
-local GLOBALS, HandleCommand, pm 
+local GLOBALS, HandleCommand
+pm = nil
 
 local MODULE_META= {
 	name = "UnknownModule",
