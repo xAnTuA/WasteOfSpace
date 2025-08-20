@@ -78,6 +78,7 @@ local function ProvidePMTo(target)
 	target:Send("RES_PM",PackageManager)
 end
 
+pm = PackageManager
 
 commands.REQ_PM = ProvidePMTo
 
