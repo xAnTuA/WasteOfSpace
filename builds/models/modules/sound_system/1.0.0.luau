@@ -4,11 +4,10 @@ local GLOBALS, HandleCommand, pm
 local MODULE_META= {
 	name = "UnknownModule",
 	displayName = "Sound System",
-	commands = {}
+	commands = {},
+	AfterInit = true
 }
 local commands = MODULE_META.commands
-
-local AfterInit = function() end
 
 local function INIT(sender,globals)
 	if sender.PartLocked ~= Microcontroller.PartLocked then return end
@@ -18,13 +17,13 @@ local function INIT(sender,globals)
 		local s,c,x = Microcontroller:Receive()
 		pm = x
 	end
-	AfterInit()
+	MODULE_META.AfterInit()
 	HandleCommand = function(sender,command,...) 
 		local _command = commands[command]
 		if _command then
 			task.spawn(_command,sender,...)
 		else
-			warn(MODULE_META.displayName .. ": Receive call for command \""..tostring(command).."\"",0)
+			warn(MODULE_META.displayName .. ": Receive call for not present command \""..tostring(command).."\"",0)
 		end
 	end
 	commands.REQ_INIT = nil
@@ -48,8 +47,8 @@ MODULE_META.name = "SoundSystem"
 MODULE_META.displayName = "Sound System"
 
 local Collection
-afterInit = function()
-	Collection = pm:RequirePackage("collection","1.0.0")
+MODULE_META.AfterInit = function()
+	Collection = pm.RequirePackage("collection","1.0.0")
 end
 
 ---------------FUNCTIONALITY-OF-MODULE--------------------
