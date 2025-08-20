@@ -8,7 +8,7 @@ return {
 		end)
 	end,
 	Run = function(array,method,...)
-		map(array, function(item,...)
+		return map(array, function(item,...)
 			item[method](item,...)
 		end,...)
 	end
