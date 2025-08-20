@@ -1,0 +1,17 @@
+{
+    "foreach": [
+        "1.0.0"
+    ],
+    "n_gram_similarity": [
+        "1.0.0"
+    ],
+    "levenshtein_distance": [
+        "1.0.0"
+    ],
+    "collection": [
+        "1.0.0"
+    ],
+    "map": [
+        "1.0.0"
+    ]
+}
