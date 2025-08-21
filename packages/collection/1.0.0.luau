@@ -9,7 +9,7 @@ return {
 	end,
 	Run = function(array,method,...)
 		return map(array, function(item,...)
-			item[method](item,...)
+			return item[method](item,...)
 		end,...)
 	end
 }
