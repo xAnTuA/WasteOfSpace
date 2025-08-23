@@ -8,3 +8,8 @@ local PROTOCOL = {
 function PROTOCOL.HandleMessage(sender,protocol,...)
 
 end
+
+function PROTOCOL.SEND() end -- ??
+
+
+return PROTOCOL

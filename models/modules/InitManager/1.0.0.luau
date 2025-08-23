@@ -2,7 +2,7 @@ local MODULE = {
 	name = "InitManager",
 	version = { 1,0,0 },
 	author = "AnTuA",
-	url = "https://raw.githubusercontent.com/xAnTuA/WasteOfSpace/refs/heads/main/packages/InitManager/1.current.luau" -- template url, not real
+	url = "https://raw.githubusercontent.com/xAnTuA/WasteOfSpace/refs/heads/main/packages/InitManager/1.stable.luau" -- template url, not real
 }
 
 

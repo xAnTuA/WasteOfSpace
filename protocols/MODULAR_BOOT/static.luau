@@ -1,4 +1,5 @@
 MODULE.status = "WAITING_FOR_INIT" 
+local lastProtocolInfoSendTo = nil
 
 local PROTOCOL = {
 	protocol = {
@@ -14,7 +15,8 @@ local COMMANDS = {
 		local payload = call.payload
 		local func = loadstring(payload.code)
 		local env = payload.env
-		if env then env {}; env.INITIALIZER end
+		if not env then env = {} end
+		env.INITIALIZER =  nil
 		setfenv(func, env) -- we shall pass info to confirm that init was successful too
 		xpcall(func(),call.payload.errorHandler)
 	end,
@@ -31,14 +33,19 @@ local COMMANDS = {
 	end
 }
 
-function PROTOCOL.HandleReceive(sender,...)
+local function HandleReceive(sender,...)
 	local args = {...}
-	if #args == 1 and args[1].protocol then sender:Send(PROTOCOL) end
+	if #args == 1 and args[1].protocol and lastProtocolInfoSendTo ~= sender then
+		lastProtocolInfoSendTo = sender
+		sender:Send(PROTOCOL)
+		return	
+	end
+
 	local call = args[2].call
 
 	if call and call.type == "request" then
-		local command = call.command
-		local _command = COMMANDS[command]
+		local command = call.command :: string
+		local _command = COMMANDS[command] 
 
 		if _command then
 			_command(sender,call)
@@ -46,8 +53,4 @@ function PROTOCOL.HandleReceive(sender,...)
 	end
 end
 
-function PROTOCOL.Run()
-	
-
-	while true do PROTOCOL.HandleReceive(Microcontroller:Receive()) end
-end
+while true do HandleReceive(Microcontroller:Receive()) end
