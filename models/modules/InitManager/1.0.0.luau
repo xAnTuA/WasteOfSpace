@@ -5,28 +5,54 @@ local MODULE = {
 	url = "https://raw.githubusercontent.com/xAnTuA/WasteOfSpace/refs/heads/main/packages/InitManager/1.stable.luau" -- template url, not real
 }
 
+local function IM(message: string) return "[Init Manager] "..message end
 
-local modem = GetPart("Modem")
-local disk = GetPart("Disk")
+print(IM("started"))
+local modem = assert(GetPart("Modem"),IM("cannot find modem"))
+local disk = assert(GetPart("Disk"),IM("cannot find disk"))
 
 local rootDir = disk:ReadAll()
+if not rootDir then rootDir = {} end
 local bootDir = rootDir.boot
-if not bootDir then rootDir.boot = {} end
+if not bootDir then bootDir = {}; rootDir.boot = bootDir end
 
-local initFile = bootDir["init.luau"]
+local initCode = bootDir["init.luau"]
 
-if not initFile then
-	initFile= modem:GetAsync(MODULE.url)
-
+if not initCode then
+	print(IM("fetching init code"))
+	initCode = modem:GetAsync(MODULE.url) 
+	bootDir["init.luau"] = initCode
 	disk:WriteAll(rootDir)
 end
 
-local success, result = pcall(loadstring,initFile)
+local function TryLoad(code)
+	local fn, err =loadstring(code)
+	if not fn then
+		warn(IM("failed to load code : "..err))
+		return false
+	end
+	print(IM("successfully loaded code"))
+	return fn 
+end
+print(IM("will try to load init code..."))
+local init = TryLoad(initCode)
 
-if success then print("[Init Manager] successfully loaded its code")
-else return error("[Init Manager] failed to load its code : ".. result , 0) end
+if not init then
+	print(IM("failed to execute init code"))
+	print(IM("will try to load backup code..."))
 
-success, result = pcall(result)
+	local backupInitFile = assert(bootDir["init.luau.bak"],IM("didn't find backup code"))
+	print(IM("backup code found, loading..."))
+	init = TryLoad(backupInitFile)
+	if not init then return warn(IM("shutting down...")) end
+end
 
-if success then print("[Init Manager] exited returning: ",result)	
-else error("[Init Manager] yield error: ",result) end
+print(IM("code loaded successfully, starting..."))
+
+local success, result = pcall(init)
+
+if success then 
+	print(IM("exited returning: "),result)
+else 
+	warn(IM("exited, yielding error: "),result) 
+end
